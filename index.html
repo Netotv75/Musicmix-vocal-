@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texto a Voz con ResponsiveVoice y Guardar Audio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: none;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .download-link {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="20240616_204336.png" alt="Logo" class="logo" width="150">
+        <textarea id="text-input" rows="5" placeholder="Escribe el texto que quieres convertir a voz..."></textarea>
+        <select id="voice-select">
+            <option value="Spanish Female">Español (femenino)</option>
+            <option value="Spanish Male">Español (masculino)</option>
+            <!-- Agrega más opciones de voces según la documentación de ResponsiveVoice -->
+        </select>
+        <button onclick="speakText()">Hablar</button>
+        <a id="download-link" class="download-link" download="audio.wav">Descargar Audio</a>
+    </div>
+
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+    <script>
+        function speakText() {
+            var text = document.getElementById('text-input').value;
+            var selectedVoice = document.getElementById('voice-select').value;
+
+            // Generar el audio usando ResponsiveVoice
+            responsiveVoice.speak(text, selectedVoice, {
+                onend: function () {
+                    // Cuando la reproducción del audio termine, se ejecuta esta función
+                    var audioBlob = new Blob([responsiveVoice.voiceBlob], { type: 'audio/wav' });
+                    var audioUrl = URL.createObjectURL(audioBlob);
+
+                    // Crear un enlace de descarga para el archivo de audio generado
+                    var downloadLink = document.getElementById('download-link');
+                    downloadLink.href = audioUrl;
+                    downloadLink.style.display = 'block';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
